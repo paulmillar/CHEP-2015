@@ -1,0 +1,68 @@
+\documentclass[a4paper]{jpconf}
+
+\bibliographystyle{iopart-num}
+\usepackage{citesort}
+\usepackage{graphicx}
+\usepackage{caption}
+%\usepackage{subcaption}
+
+\def\tilde{\raise.17ex\hbox{$\scriptstyle\sim$}}
+
+\begin{document}
+\title{New adventures in storage: cloud storage and CDMI}
+
+\author{AP Millar$^1$, G~Behrmann$^2$, C~Bernardt$^1$, P~Fuhrmann$^1$,
+  D~Litvintsev$^4$, T~Mkrtchyan$^1$, A~Rossi$^4$, K~Schwank$^1$,
+  H~Heßling$^3$, J~Weschenfelder$^3$}
+
+\address{$^1$ IT Dept., DESY, Notkestrasse 85, Hamburg, Germany}
+\address{$^2$ NORDUnet, Copenhagen, Denmark}
+\address{$^3$ HTW Berlin}
+\address{$^4$ Fermilab, Chicago, IL, USA}
+
+\ead{paul.millar@desy.de}
+
+\begin{abstract}
+Traditionally storage systems have had well understood
+responsibilities and behaviour, codified by the POSIX standards. More
+sophisticated systems (such as dCache) support additional
+functionality, such as storing data on media with different latencies
+(SSDs, HDDs, tapes). From a user's perspective, this forms a
+relatively simple adjunct to POSIX: providing optional
+quality-of-service values when writing data and optionally requesting
+data be staged from tape ahead of use.
+
+The CDMI protocol provides a standard mechanism for clients to
+discover and use many advanced features. Such features include storing
+and querying metadata, searching for files matching metadata
+predicates, controlling a file's quality-of-service and retention
+policies, providing an object store and alternative protocol
+discovery.
+
+A CDMI enabled storage has the potential for greatly simplifying a
+more general service as some high-level functionality can be delegated
+to the storage system. This reduces and may remove the need to run
+additional services, which makes it easier for sites to support their
+users.
+
+By implementing the CDMI standard, dCache can expose new features in a
+standards compliant fashion. Here, various scenarios are presented
+where CDMI provides an advantage and the road-map for CDMI support in
+dCache is explored.
+\end{abstract}
+
+\section{Introduction}
+
+This\cite{rfc3230}
+
+\section{Conclusion}
+
+\ack
+
+Acknowledge LSDMA
+Acknowledge HTW Berlin
+
+\section*{References}
+\bibliography{dCache-CDMI-CHEP2015}
+
+\end{document}

@@ -1,0 +1,63 @@
+\documentclass[a4paper]{jpconf}
+
+\bibliographystyle{iopart-num}
+\usepackage{citesort}
+\usepackage{graphicx}
+\usepackage{caption}
+%\usepackage{subcaption}
+
+\def\tilde{\raise.17ex\hbox{$\scriptstyle\sim$}}
+
+\begin{document}
+\title{Unlocking data: federated identity with LSDMA and dCache}
+
+\author{AP Millar$^1$, G~Behrmann$^2$, C~Bernardt$^1$, P~Fuhrmann$^1$,
+  M~Hardt$^3$, A~Hayrapetyan$^3$, D~Litvintsev$^4$, T~Mkrtchyan$^1$,
+  A~Rossi$^4$, K~Schwank$^1$}
+
+\address{$^1$ IT Dept., DESY, Notkestrasse 85, Hamburg, Germany}
+\address{$^2$ NORDUnet, Copenhagen, Denmark}
+\address{$^3$ KIT}
+\address{$^4$ Fermilab, Chicago, IL, USA}
+
+\ead{paul.millar@desy.de}
+
+\begin{abstract}
+X.509, the dominant identity system from grid computing, has proved
+unpopular for many user communties. More popular alternatives
+generally assume the user is interacting via their web-browser. Such
+alternatives allow a user to authenticate with many services with the
+same credentials (username and password). They also allow users from
+different organisations form collaborations quickly and simply.
+
+Scientists generally require that their custom analysis software has
+direct access to the data. Such direct access is not currently
+supported by alternatives to X.509, as they require the use of a
+web-browser.
+
+Various approaches to solve this issue are being investigated as part
+of the Large Scale Data Management and Analysis (LSDMA) project, a
+German funded national R\&D project. These involve dynamic credential
+translation (creating an X.509 credential) to allow backwards
+compatibility in addition to direct SAML- and OpenID Connect-based
+authentication.
+
+We present a summary of the current state of art and the current
+status of the federated identity work funded by the LSDMA project
+along with the future road map.
+\end{abstract}
+
+\section{Introduction}
+
+This\cite{rfc3230}
+
+\section{Conclusion}
+
+\ack
+
+Acknowledge LSDMA
+
+\section*{References}
+\bibliography{LSDMA-CHEP2015}
+
+\end{document}

@@ -1,0 +1,81 @@
+\documentclass[a4paper]{jpconf}
+
+\bibliographystyle{iopart-num}
+\usepackage{citesort}
+\usepackage{graphicx}
+\usepackage{caption}
+%\usepackage{subcaption}
+
+\def\tilde{\raise.17ex\hbox{$\scriptstyle\sim$}}
+
+\begin{document}
+\title{dCache, Sync-and-Share for Big Data}
+
+\author{P~Fuhrmann$^1$, AP Millar$^1$, T~Mkrtchyan$^1$,
+  G~Behrmann$^2$, C~Bernardt$^1$, K~Schwank$^1$, A~Rossi$^3$,
+  D~Litvintsev$^3$, P~van~der~Reest$^1$, V~Guelzow$^1$,
+  Q~Buchholz$^1$}
+
+\address{$^1$ IT Dept., DESY, Notkestrasse 85, Hamburg, Germany}
+\address{$^2$ NORDUnet, Copenhagen, Denmark}
+\address{$^3$ Fermilab, Chicago, IL, USA}
+
+\ead{paul.millar@desy.de}
+
+\begin{abstract}
+The availability of cheap, easy-to-use sync-and-share cloud services
+has split the scientific storage world into the traditional big data
+management systems and the very attractive sync-and-share
+services. With the former, the location of data is well understood
+while the latter is mostly operated in the Cloud, resulting in a
+rather complex legal situation.
+
+Beside legal issues, those two worlds have little overlap in user
+authentication and access protocols. While traditional storage
+technologies, popular in HEP, are based on X509, cloud services and
+sync-n-share software technologies are generally based on
+user/password authentication or mechanisms like SAML or Open ID
+Connect. Similarly, data access models offered by both are somewhat
+different, with sync-n-share services often using proprietary
+protocols.
+
+As both approaches are very attractive, dCache.org developed a hybrid
+system, providing the best of both worlds. To avoid reinvent the
+wheel, dCache.org decided to embed another Open Source project:
+OwnCloud. This offers the required modern access capabilities but does
+not support the managed data functionality needed for large capacity
+data storage.
+
+With this hybrid system, scientist can share files and synchronize
+their data with laptops or mobile devices as easy as with any other
+cloud storage service. On top of this, the same data can be accessed
+via established mechanisms, like GridFTP to serve the Globus Transfer
+Service or the WLCG FTS3 tool, or the data can be made available to
+worker nodes or HPC applications via a mounted filesystem. As dCache
+provides a flexible authentication module, the same user can access
+its storage via different authentication mechanisms; e.g., X.509 and
+SAML. Additionally, users can specify the desired quality of service
+or trigger media transitions as necessary, so tuning data access
+latency to the planned access profile. Such features are a natural
+consequence of using dCache.
+
+We will describe the design of the hybrid dCache/OwnCloud system,
+report on several months of operations experience running it at DESY,
+and elucidate on the future road-map.
+\end{abstract}
+
+\section{Introduction}
+
+This\cite{rfc3230}
+
+
+\section{Conclusion}
+
+\ack
+
+Acknowledge LSDMA
+
+\section*{References}
+\bibliography{dCache-cloud-CHEP2015}
+
+\end{document}
