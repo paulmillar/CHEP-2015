@@ -49,7 +49,37 @@ along with the future road map.
 
 \section{Introduction}
 
-This\cite{rfc3230}
+With the advent of the Large Hadron Collider (LHC) facility at CERN
+and the corresponding world-wide grid infrastructure, the World-wide
+LHC Computational Grid (WLCG), deploying and managing data that is
+spread across the globe became a reality.  The community of scientists
+that use wish to analyse this data is equally distributed, requiring a
+common, decentralised authentication mechanism.
+
+The adopted solution was to adopt X.509-based authentication, with
+users issued with an X.509 certificate by their local certificate
+authority (CA), which typically operate nationally.  These CAs are
+trusted by the sites in WLCG providing resources through the CA's
+membership of a global trust federation (the IGTF).  By trusting the
+CAs, the sites can trust that the X.509 certificates they issue
+identify the users.
+
+The adoption of X.509 client certificates led to a world-wide,
+decentralised network of resources for the analysis and storage of LHC
+data.  This model has spread, as the technology brought into
+production to support LHC use-cases is adapted to support other
+communties.  However, X.509 client certificates remain a burden for
+users: it is neither a technology they are used to, nor something that
+existing software provides a good user experience.  The extent to
+which this affects scientists is not to be understated: it is only the
+larger user communites that have adopted X.509 client certificates as
+their authentication mechanism as they have the resources to train
+their users in a new authentication mechanism.
+
+Given the difficulties faced with X.509-based authentication, several
+projects have looked into providing a decentralised (or ``federated'')
+authentication mechanisms as alternatives.  Perhaps the most widely
+deployed currently is the SAML-based approach.
 
 \section{Conclusion}
 
