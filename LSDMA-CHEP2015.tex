@@ -81,6 +81,103 @@ projects have looked into providing a decentralised (or ``federated'')
 authentication mechanisms as alternatives.  Perhaps the most widely
 deployed currently is the SAML-based approach.
 
+\section{Trust}
+
+Users new to grid computing often experience problems in acquiring an
+X.509 certificate, as the CA must vet the users identity.  For new
+communities, it is harder as they often have no access to an
+IGTF-accredited CA and establishing a new CA is prohibitively
+expensive.
+
+However, often this overhead is unnecessary as the user's home
+institute has already vetted the user with at least the same level of
+scrutiny as IGTF-membership requires.  Because of this, several
+projects have appeared that allow the user to obtain their certificate
+by authenticating against their home
+institute\cite{fed-login-teragrid}.  While this is an improvement, it
+still requires the use of X.509 certificates.  This is problematic as
+most software does not make handling X.509 easy for the user.
+
+
+\section{Direct access problem}
+
+\section{LSDMA}
+
+LSDMA\cite{lsdma} (Large Scale Data Management and Analysis) is a
+project funded by the German government to link research of the
+Helmholtz Association of research centres in Germany with community
+specific Data Life Cycle Laboratories (DLCL). The DLCLs work in close
+cooperation with scientists and they process, manage and analyse data
+during its whole life cycle. The joint research and development
+activities in the DLCLs lead to community-specific tools and
+mechanisms. The DLCLs are complemented with a Data Services
+Integration Team (DSIT). This provides generic technologies and
+infrastructures for multi-community use, based on research and
+development in the areas of data management, data access and security,
+storage technologies and data preservation.
+
+dCache, as major partner within the LSDMA DSIT team, is working on
+solving these authentication problems through authenticating via SAML.
+This is non-trivial as almost all SAML usage has been for web-driven
+activity while most data transfers are not initiated by a web-browser.
+
+Within DSIT, the plan is to establish a federation of Identity
+Providers (IdPs) for Germany: LSDMA-AAI.  This federation is similar
+to the existing DFN federation (DFN-AAI)\cite{dfn-aai-website} and we
+anticipate LSDMA-AAI becoming part of DFN-AAI in the future.  The
+initial work will be on providing web-portals that allow a user to
+authenticate via SAML.  An X.509 credential is built from that
+information, which is used when authenticating with data servers.
+This follows existing work in this
+direction\cite{groeper2007architecture}.
+
+Group-membership is a common concern across many projects as often it
+is desired to authorise some operation based on that user's group
+membership.  A common group-membership service will be run within
+Germany to allow services to discover group membership of a user.
+
+Later, support in dCache for certain transfer protocols (e.g., FTP and
+NFS) will be updated to allow direct SAML-based authentication.  This
+will allow clients to access their data directly without a web-portal
+using their home institute credentials in a secure fashion.
+
+
+\section{Work undertaken}
+
+Tunnelling SAML assertion through ssh password field.
+
+Agreement with DFN-AAI to use their 
+
+\section{Future work}
+
+\section{Conclusion}
+
+
+---
+
+X.509, the dominant identity system from grid computing, has proved
+unpopular for many user communties. More popular alternatives
+generally assume the user is interacting via their web-browser. Such
+alternatives allow a user to authenticate with many services with the
+same credentials (username and password). They also allow users from
+different organisations form collaborations quickly and simply.
+
+Scientists generally require that their custom analysis software has
+direct access to the data. Such direct access is not currently
+supported by alternatives to X.509, as they require the use of a
+web-browser.
+
+Various approaches to solve this issue are being investigated as part
+of the Large Scale Data Management and Analysis (LSDMA) project, a
+German funded national R\&D project. These involve dynamic credential
+translation (creating an X.509 credential) to allow backwards
+compatibility in addition to direct SAML- and OpenID Connect-based
+authentication.
+
+We present a summary of the current state of art and the current
+status of the federated identity work funded by the LSDMA project
+along with the future road map.
+
 \section{Conclusion}
 
 \ack
