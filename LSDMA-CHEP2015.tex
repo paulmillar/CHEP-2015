@@ -48,21 +48,28 @@ along with the future road map.
 \end{abstract}
 
 \section{Introduction}
-
 With the advent of the Large Hadron Collider (LHC) facility at CERN
 and the corresponding world-wide grid infrastructure, the World-wide
 LHC Computational Grid (WLCG), deploying and managing data that is
 spread across the globe became a reality.  The community of scientists
-that use wish to analyse this data is equally distributed, requiring a
+that need to access this data is equally distributed, requiring a
 common, decentralised authentication mechanism.
 
-The adopted solution was to adopt X.509-based authentication, with
-users issued with an X.509 certificate by their local certificate
-authority (CA), which typically operate nationally.  These CAs are
-trusted by the sites in WLCG providing resources through the CA's
-membership of a global trust federation (the IGTF).  By trusting the
-CAs, the sites can trust that the X.509 certificates they issue
-identify the users.
+The solution was to adopt X.509-based authentication.  Users are
+issued with an X.509 certificate by their local certificate authority
+(CA), which typically operate nationally.  The sites in WLCG that
+provide resources trust CAs through their membership of a global trust
+federation: the IGTF.  By trusting these CAs, services can trust that
+the X.509 certificates they issue correctly identify the users.
+
+Group-membership is an example of a service that authenticates via
+X.509 certificate.  The user contacts the service, typically once per
+day, to receive a signed assertion (in the form of an X.509
+certificate) which describes in which groups the user is a member.
+Later, when authenticating with other grid services, the user provides
+both their identity and their group-membership assertion to the
+service.  This allows the service to authorise the user based on their
+group-membership, rather than their individual identity.
 
 The adoption of X.509 client certificates led to a world-wide,
 decentralised network of resources for the analysis and storage of LHC
@@ -78,28 +85,62 @@ their users in a new authentication mechanism.
 
 Given the difficulties faced with X.509-based authentication, several
 projects have looked into providing a decentralised (or ``federated'')
-authentication mechanisms as alternatives.  Perhaps the most widely
-deployed currently is the SAML-based approach.
+authentication mechanisms as alternatives.  Security Assertion Markup
+Language (SAML) is perhaps the most widely deployed in accademic
+environments.  SAML allows the service to delegate responsibility for
+authenticating the user to another service.  When the user
+successfully authenticates, the service receives an assertion
+describing that user.
 
 \section{Trust}
 
 Users new to grid computing often experience problems in acquiring an
-X.509 certificate, as the CA must vet the users identity.  For new
-communities, it is harder as they often have no access to an
-IGTF-accredited CA and establishing a new CA is prohibitively
-expensive.
+X.509 certificate.  In part, this is because membership of the IGTF
+requires the CA vet the users identity with face-to-face meeting and
+state-issued identity card.  For new communities, this process is hard
+as they often have no access to an IGTF-accredited CA and establishing
+a new CA is prohibitively expensive.
 
-However, often this overhead is unnecessary as the user's home
-institute has already vetted the user with at least the same level of
-scrutiny as IGTF-membership requires.  Because of this, several
-projects have appeared that allow the user to obtain their certificate
-by authenticating against their home
-institute\cite{fed-login-teragrid}.  While this is an improvement, it
-still requires the use of X.509 certificates.  This is problematic as
-most software does not make handling X.509 easy for the user.
+This overhead is often unnecessary as the user's home institute may
+have already vetted the user's identity with the level of scrutiny
+required by IGTF.  Several projects exist that allow a user to acquire
+an X.509 certificate in their web-browser.  Typically SAML is used to
+allow the user to authenticate with their home institute and the
+service will accept the SAML assertion and provide the user with an
+X.509 certificate.  Such services can provide the user with either
+provide long-lived (MICS profile) or short-lived (SLCS profile)
+certificates, depending on the intended use.
 
+While this is an improvement, it carries two disadvantages: first, the
+use of SAML currently requires the use of a web-browser; second, the
+user is exposed to X.509 certificates, which generally require the
+user to gain experience using specialist software.
 
 \section{Direct access problem}
+
+The requirement to use a web-browser comes from SAML.  Currently, the
+authentication services, known as identity providers (IdP), only
+support the user contacting it with a web-browser.  The authentication
+challenge is an HTML web-page, typically requesting the user's
+username and password.  Such a web-page is free-form and there is no
+pratical way to automate this process.  An alternative SAML-based
+authentication mechanism, called Enhanced Client or Proxy (ECP)
+profile, allows automated login; however, there are currently very few
+IdPs that support this profile, making it difficult to base a service
+on ECP.
+
+\section{Portal delegation problem}
+
+Portals provide considerable benefits to ...
+
+SAML web-SSO may be used.
+
+Needs a credential translation service.
+
+Several approaches already tried: SERONGS, InCommons.
+
+Services that have already enabled support for MyProxy-like credential
+delegation.
 
 \section{LSDMA}
 
@@ -144,45 +185,26 @@ using their home institute credentials in a secure fashion.
 
 \section{Work undertaken}
 
+LDAP facade provides the ability to add SAML interop with existing
+software.
+
 Tunnelling SAML assertion through ssh password field.
 
-Agreement with DFN-AAI to use their 
+Agreement with DFN-AAI to use their SLCS service.
 
 \section{Future work}
 
-\section{Conclusion}
+Deployment of a credential translation service to bridge between an
+OAuth-based X.509 request
 
-
----
-
-X.509, the dominant identity system from grid computing, has proved
-unpopular for many user communties. More popular alternatives
-generally assume the user is interacting via their web-browser. Such
-alternatives allow a user to authenticate with many services with the
-same credentials (username and password). They also allow users from
-different organisations form collaborations quickly and simply.
-
-Scientists generally require that their custom analysis software has
-direct access to the data. Such direct access is not currently
-supported by alternatives to X.509, as they require the use of a
-web-browser.
-
-Various approaches to solve this issue are being investigated as part
-of the Large Scale Data Management and Analysis (LSDMA) project, a
-German funded national R\&D project. These involve dynamic credential
-translation (creating an X.509 credential) to allow backwards
-compatibility in addition to direct SAML- and OpenID Connect-based
-authentication.
-
-We present a summary of the current state of art and the current
-status of the federated identity work funded by the LSDMA project
-along with the future road map.
+convert SAML assertions to X.509 
 
 \section{Conclusion}
 
 \ack
 
-Acknowledge LSDMA
+Work described in this paper was funded by the LSDMA project, DESY,
+Fermilab and NDGF.
 
 \section*{References}
 \bibliography{LSDMA-CHEP2015}
