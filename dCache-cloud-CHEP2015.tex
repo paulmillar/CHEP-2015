@@ -66,7 +66,7 @@ and elucidate on the future road-map.
 
 \section{Introduction}
 
-The term ``cloud storage'' has come to have many different meanings to
+The term ``cloud storage'' has come to have different meanings to
 different people; for example, a large file-system, a generic
 object-storage and a sync-and-share style service have all been deemed
 cloud storage.  Perhaps the most common aspect is that a large
@@ -76,12 +76,11 @@ sustainability of that service.
 
 Storing large amounts of data is not a new concept to the high-energy
 particle physics (HEP) community, which has constantly strived against
-hardware limitations to store all their data.  The result is software,
-such as dCache\cite{dcache}, that combines the storage capacity of
-many computers, allowing sites to offer a scalable storage service
-both in terms of performance and capacity.  This allows sites to store
-both the HEP data produced by detectors and the result of physics
-analysis.
+hardware limitations to store data.  The result is software, such as
+dCache\cite{dcache}, that combines the storage capacity of many
+computers, allowing sites to offer a scalable storage service both in
+terms of performance and capacity.  This allows sites to store both
+the HEP data produced by detectors and the result of physics analysis.
 
 Despite this experience with large amounts of data, users found the
 services offered by sync-and-share cloud companies a useful addition
@@ -90,11 +89,12 @@ desktop(s) with laptop(s), and easily sharing those files with
 colleagues provided a convenient and light-weight solution compared to
 more heavy-weight solutions that were officially supported by sites.
 
-Synchronising files with external cloud providers means those files
-are stored on a remote server, which may be located in a different
-country from the user.  Within a changing climate, it became desirable
-not to expose such files to external companies, especially those based
-in foreign countries.
+Allowing disconnect synchronision (which does not require pairs of
+devices be available concurrently) means that files must be stored on
+some central service, which may be located in a different country from
+the user.  Within a changing climate, it became desirable not to
+expose such files to external companies, especially those based in
+foreign countries.
 
 For these reasons, DESY needed to provide a cloud sync-and-share
 service for its users: most promenantly, to particle physicists and
@@ -111,20 +111,35 @@ from DESY users prior experience with external services.  It must be
 ``easy to use'' or sufficiently similar to existing services that
 users can migrate to the new system with little or no support.
 
-The platform should support Windows, Mac, Linux-based computers.
-There should also be support for mobile devices, such as Android-based
-devices.
+It should support all the computing platforms DESY currently employs:
+Microsoft Windows based desktops, Apple Macintosh and Linux-based
+computers.  There should also be support for mobile devices, such as
+those that have adopted the Android Operating System.
 
-All data must be stored at DESY, so users can be confident the data is
-not available to third-parties for data-mining.
+All data must be stored at DESY, so users can be confident that their
+data has not been exported to third-parties for data-mining or other
+unauthorised activity.
 
-It should integrate well with DESY infrastructure.
+The service should integrate well with the existing DESY
+infrastructure; in particular, the user should be able to authenticate
+with their DESY username and password.
 
-Although not hard requirements, some additional possible uses are
-anticipated: having non-synchronising storage, different
-quality-of-service, moving data between synchronising and
-non-synchronising storage, third-party transfer of files to other
-services, direct access to storage files from computing facilities.
+Although not hard requirements, the following describes some
+additional use-cases that are anticipated.  These are not required for
+the service to be useful, but are likely to be request by users.
+
+The users may want to some storage capacity that is not synchronised
+with their devices.  Such files will be available for sharing with
+others without being synchronised on all devices.  Files should be
+movable between synchronising and non-synchronising space.
+
+Providing different quality-of-service guarantees: archival storage
+for mission critical data and disk-only copy for other data.
+
+Supporting transferring of files to some remote service without the
+data travelling through the user's computer.
+
+Direct access to storage files from computing facilities.
 
 \section{Design}
 
@@ -132,35 +147,38 @@ The project evaluated different existing solutions and, while no
 single project satisfied all requirements, a combination of two
 projects satisfied the existing requirements and provided sufficient
 flexibility to satisfy the anticipated additional usage.  These two
-projects are ownCloud and dCache.
+projects are ownCloud\cite{owncloud-website} and dCache.
 
 The ownCloud project is an open-source sync-and-share storage solution
 that is, at the time of writing, gaining popularity.  In particular,
 it is the use of this service in other HEP laboratories that makes
 ownCloud particularly attractive.  Although ownCloud provides users
 with a good front-end system, including web-based browsing, and
-synchronisation clients for Windows, Linux, Mac and mobile devices, it
-lacks support for large-scale managed storage.
+synchronisation clients for Microsoft Windows, Linux, Apple Macintosh
+and mobile devices, it lacks support for managing data on large scale.
+Instead, it assumes a site has an appropriate storage system mounted
+on the local filesystem.
 
 The dCache project provides a powerful managed storage system, with
 good integration with scientific data life-cycle and automatic file
-migration between different media, but provides no sync-and-share
-facilities.
+migration between different media.  It currently provides no
+sync-and-share facilities.
 
-The design combines both dCache and ownCloud.  dCache's support for
-standard protocols allows for easy integration with ownCloud; dCache
-is mounted via NFS\cite{rfc5661} on servers hosting ownCloud, which
-accesses files using the standard POSIX API.
+The DESY Cloud design combines both dCache and ownCloud.  dCache's
+support for standard protocols allows for easy integration with
+ownCloud; dCache is mounted via NFS\cite{rfc5661} on servers hosting
+the ownCloud software.  The ownCloud instances access files using the
+standard POSIX API.
 
-User authentication is based on username and password.  The
-user-supplied credential is used to authenticate an LDAP query, where
-the LDAP server uses Kerberos interaction to verify the supplied
-credential.  The LDAP query provides information about the user, which
-is used by ownCloud to establish whether or not the user is allowed to
-use the service.
+In ownCloud, user authentication is based on username and password.
+The user-supplied credential is used to authenticate an LDAP query,
+where the LDAP server uses Kerberos interaction to verify the supplied
+credential (a ``pass though'' configuration).  The LDAP query provides
+information about the user, which is used by ownCloud to establish
+whether or not the user is allowed to use the service.
 
 At DESY, a proprietary system (called ``the registry'') provides
-information about users, with various adapters (called ``plaform
+information about users.  Various adapters (called ``plaform
 adapters'') provide service-specific views on this information.  The
 LDAP server that ownCloud queries in a platform adapter, tuned to
 provide ownCloud with the information it needs.
@@ -171,17 +189,22 @@ client requests being directed to one machine.  In addition to scaling
 the front-end service, this load-balancing allows routine maintenance
 of the ownCloud machines without service down-time.
 
-Details of dCache cluster here.
-
 \section{Scientific Cloud Vision}
 
-The sync-and-share service fits within the dCache ``Scientific Cloud''
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{Figures/dCache-cloud}
+  \caption{The Scientific Cloud}
+  \label{fig:scicloud}
+\end{figure}
+
+The DESY Cloud service fits within the dCache ``Scientific Cloud''
 vision.  In this model, a single storage system provides storage
-capacity that may be used in different operational modes.  For examle,
-the same storage system might be used for fast ingest of data, a
-sync-and-share service, storage for HPC and HTC computing farms, and
-remote storage for moving data to remote sites.  Figure X shows this
-diagrammatically.
+capacity that may be used in different operational modes.  For
+example, the same storage system might be used for fast ingest of
+data, a sync-and-share service, storage for HPC and HTC computing
+farms, and remote storage for moving data to remote sites.
+Figure~\ref{fig:scicloud} shows this diagrammatically.
 
 Providing a single system brings many advantages.  A single system
 reduces the cost of operating the system as different services appear
@@ -192,16 +215,25 @@ resources, as unnecessary redundances can be removed.
 
 \section{Current status}
 
-Currently the DESY Cloud provides a service to over 200 users, with 2
-million files using some 2.4 TiB of capacity.  While small, this is
-the first step in rolling out a site-wide service.
+The initial prototyping and deployment has been completed.  A
+production infrastructure has been developed and is being rolled out
+within the DESY community.
 
-During the process, problems have been discovered, both in ownCloud
-and dCache.  The team at DESY have been proactive in fixing these,
-submitting those fixes upstream and deploying updated versions of the
-software.  While not always true, the desired goal is to run unpatched
-software.
+At time of writing, the current set of users is small: only some
+200~users have access to the service.  They currently have around
+2~million files stored on the service, consuming some 2.4~TiB of
+capacity.
 
+The experience gained from this limited deployment has allowed the
+deployment team to discover problems both in ownCloud and dCache
+software.  The team at DESY have been proactive in fixing these
+problems, with patches being sent.  These patches have been accepted
+in new releases of both dCache and ownCloud; this is in keeping with
+the desired goal of running unpatched software.
+
+This experience, both in running the software and DESY's ability to
+diagnose and fix problems as they are found, leave us confident as we
+roll out the software to all members of DESY.
 
 \section{Development and future work}
 
@@ -221,10 +253,11 @@ ownCloud, so a simple work-around was introduced in dCache.
 
 Another common use-case involves the bulk transfer of files between
 two sites, perhaps in different countries.  Services
-exist\cite{fts}\cite{globus} that support transferring data reliably,
-retrying transfers as necessary.  By allowing access through the
-protocols used in such transfers, the DESY Cloud service would allow
-users to take advantage of these services.
+exist\cite{fts-website}\cite{globus-website} that support transferring
+scientific data reliably, optimising throughput and retrying transfers
+as necessary.  By allowing access through the protocols used in such
+services, the DESY Cloud service would allow users to migrate data as
+necessary.
 
 dCache already allows files to be shared between users by specifying
 ACLs that permit an individual to read that file.  Currently these are
@@ -262,21 +295,22 @@ while not placing to great a burden on the server.
 
 \section{Conclusion}
 
-We have presented the DESY Cloud service: a sync-and-share service run
-at DESY using open-source software.  While the project is still in its
-infancy, it is being rolled out and currently has a number of active
-users.
+We have presented the DESY Cloud service: a sync-and-share service in
+production at DESY using open-source software.  While the project is
+still being rolled out and currently has a limited number of active
+users, our experience gives us confidence it will scale to support all
+DESY users.
 
-During this process problems have been found.  Such problems are fixed
-and those fixes offered upstream to the corresponding projects.
-
-A number of future goals are anticipated, bringing the service into
-alignment with the Scientific Cloud vision.
+The improvements and bug-fixes that were developed while bringing this
+service into a production-like state and the goal of running unpatched
+software results in a service that other sites can replicate.  For
+example, sites that already have a dCache instance can extend that
+service to include a sync-and-share service.
 
 \ack
 
-Work described in this paper was funded by LSDMA, DESY, Fermilab and
-NDGF.
+Work described in this paper was funded by the LSDMA project, DESY,
+Fermilab and NDGF.
 
 \section*{References}
 \bibliography{dCache-cloud-CHEP2015}
