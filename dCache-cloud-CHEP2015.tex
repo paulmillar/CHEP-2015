@@ -144,7 +144,8 @@ between synchronising and non-synchronising space.
 
 \item
 Providing different quality-of-service guarantees: archival storage
-for mission critical data and disk-only copy for other data.
+for mission critical data, disk-only copy for bulk data, and
+low-latency storage using SSDs.
 
 \item
 Supporting the transfer of files to some remote service without the
@@ -254,20 +255,15 @@ capacity.
 The experience gained from this limited deployment has allowed the
 deployment team to discover problems both in ownCloud and dCache
 software.  The team at DESY has been proactive in fixing these
-problems, with patches being sent @@[this is not clear.  Who is
-  writing the patches, who is receiving them??]@@.  These patches have
-been accepted in new releases of both dCache and ownCloud, in keeping
-with the desired goal of running unpatched software.
+problems by writing patches and sending them to the corresponding
+project.  These patches have been accepted in new releases of both
+dCache and ownCloud, in keeping with the desired goal of running
+unpatched software.
 
-This experience, both in running the software and with DESY's ability
-to diagnose and fix problems as they are found, leave us confident as
-we roll out the software to all members of DESY.
-
-@@[Suggest rewriting this: The experience gained from running the
-  software and the DESY team's alacrity in diagnosing and fixing
-  problems as they are found, instill a high degree of confidence in
-  the viability of this solution as we roll out the software to all
-  members of DESY]@@
+The experience gained from running the software and the DESY team's
+alacrity in diagnosing and fixing problems as they are found, instill
+a high degree of confidence in the viability of this solution as we
+roll out the software to all members of DESY.
 
 \section{Development and future work}
 
@@ -325,9 +321,8 @@ reveals that nothing has changed, this introduces unnecessary load on
 the server.  To reduce the impact of this load, the client checks
 every 30 seconds whether there have been any changes.  However, this
 results in the client becoming slow to react to remote changes.
-@@[why the new paragraph? join this with preceding]@@ Introducing a
-notification scheme would allow clients to react quickly while not
-placing too great a burden on the server.
+Introducing a notification scheme would allow clients to react quickly
+while not placing too great a burden on the server.
 
 \section{Conclusion}
 
@@ -339,8 +334,9 @@ DESY users.
 
 The service is provided freely to DESY users, with no charge at point
 of use.  While no decision has been made on how the final service will
-be funded, we anticipate this policy will continue and the service
-will be supported from indirect funding.
+be funded, we anticipate this policy will continue for a base-line
+service.  Additional fees might apply for higher quality-of-service;
+e.g., archival storage using tape or low-latency access using SSDs.
 
 The improvements and bug fixes that were developed while bringing this
 service into a production-like state and the goal of running unpatched
