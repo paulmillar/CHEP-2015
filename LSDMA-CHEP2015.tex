@@ -24,10 +24,10 @@
 
 \begin{abstract}
 X.509, the dominant identity system from grid computing, has proved
-unpopular for many user communties. More popular alternatives
+unpopular for many user communities. More popular alternatives
 generally assume the user is interacting via their web-browser. Such
 alternatives allow a user to authenticate with many services with the
-same credentials (username and password). They also allow users from
+same credentials (user-name and password). They also allow users from
 different organisations form collaborations quickly and simply.
 
 Scientists generally require that their custom analysis software has
@@ -55,16 +55,16 @@ spread across the globe became a reality.  The community of scientists
 that need to access this data is equally distributed, requiring a
 common, decentralised authentication mechanism.
 
-The solution was to adopt X.509-based authentication.  Users are
-issued with an X.509 certificate by their local certificate authority
-(CA), which typically operate nationally.  The sites in WLCG that
-provide resources trust CAs through their membership of a global trust
+The adopted solution was X.509-based authentication.  Users are issued
+with an X.509 certificate by their local certificate authority (CA),
+which typically operate nationally.  The sites in WLCG that provide
+resources trust CAs through their membership of a global trust
 federation: the IGTF.  By trusting these CAs, services can trust that
 the X.509 certificates they issue correctly identify the users.
 
 Group-membership is an example of a service that authenticates via
 X.509 certificate.  The user contacts the service, typically once per
-day, to receive a signed assertion (in the form of an X.509
+day, to receive a signed assertion (in the form of an additional X.509
 certificate) which describes in which groups the user is a member.
 Later, when authenticating with other grid services, the user provides
 both their identity and their group-membership assertion to the
@@ -75,18 +75,19 @@ The adoption of X.509 client certificates led to a world-wide,
 decentralised network of resources for the analysis and storage of LHC
 data.  This model has spread, as the technology brought into
 production to support LHC use-cases is adapted to support other
-communties.  However, X.509 client certificates remain a burden for
+communities.  However, X.509 client certificates remain a burden for
 users: it is neither a technology they are used to, nor something that
 existing software provides a good user experience.  The extent to
 which this affects scientists is not to be understated: it is only the
-larger user communites that have adopted X.509 client certificates as
+larger user communities that have adopted X.509 client certificates as
 their authentication mechanism as they have the resources to train
-their users in a new authentication mechanism.
+their users in a new authentication mechanism.  The result is that
+smaller communities are unable to access such resources.
 
 Given the difficulties faced with X.509-based authentication, several
 projects have looked into providing a decentralised (or ``federated'')
 authentication mechanisms as alternatives.  Security Assertion Markup
-Language (SAML) is perhaps the most widely deployed in accademic
+Language (SAML) is perhaps the most widely deployed in academic
 environments.  SAML allows the service to delegate responsibility for
 authenticating the user to another service.  When the user
 successfully authenticates, the service receives an assertion
@@ -94,55 +95,110 @@ describing that user.
 
 \section{Trust}
 
-Users new to grid computing often experience problems in acquiring an
-X.509 certificate.  In part, this is because membership of the IGTF
-requires the CA vet the users identity with face-to-face meeting and
-state-issued identity card.  For new communities, this process is hard
-as they often have no access to an IGTF-accredited CA and establishing
-a new CA is prohibitively expensive.
+Part of the problem faced by new users is in acquiring an X.509
+certificate.  In part, this is because membership of the IGTF requires
+the CA vets the user's identity with a face-to-face meeting and a
+state-issued identity card or passport.  For new communities, this
+process is hard as they often have no access to an IGTF-accredited CA
+and establishing a new CA is prohibitively expensive.
 
-This overhead is often unnecessary as the user's home institute may
-have already vetted the user's identity with the level of scrutiny
-required by IGTF.  Several projects exist that allow a user to acquire
-an X.509 certificate in their web-browser.  Typically SAML is used to
-allow the user to authenticate with their home institute and the
-service will accept the SAML assertion and provide the user with an
-X.509 certificate.  Such services can provide the user with either
-provide long-lived (MICS profile) or short-lived (SLCS profile)
-certificates, depending on the intended use.
+This overhead is often unnecessary as the user's home institute
+(university or research facility) may have already vetted the user's
+identity with the level of scrutiny required by IGTF.  Several
+services exist\cite{cilogon}\cite{tcs}\cite{dfn-aai} that allow a user
+to acquire an X.509 user certificate in their web-browser based on
+this scrutiny.  Typically SAML is used to allow the user to
+authenticate with their home institute and the service will accept the
+SAML assertion and provide the user with an X.509 certificate.  Such
+services can provide the user with either provide long-lived (MICS
+profile) or short-lived (SLCS profile) certificates, depending on the
+intended use.
 
 While this is an improvement, it carries two disadvantages: first, the
 use of SAML currently requires the use of a web-browser; second, the
 user is exposed to X.509 certificates, which generally require the
 user to gain experience using specialist software.
 
-\section{Direct access problem}
-
-The requirement to use a web-browser comes from SAML.  Currently, the
-authentication services, known as identity providers (IdP), only
-support the user contacting it with a web-browser.  The authentication
+The requirement to use a web-browser comes from SAML and how it is
+commonly deployed.  Currently, the authentication service run by the
+home institute and known as the identity provider (IdP), only support
+the user contacting it with a web-browser.  The authentication
 challenge is an HTML web-page, typically requesting the user's
-username and password.  Such a web-page is free-form and there is no
-pratical way to automate this process.  An alternative SAML-based
+user-name and password.  Such a web-page is free-form and there is no
+practical way to automate this process.  An alternative SAML-based
 authentication mechanism, called Enhanced Client or Proxy (ECP)
-profile, allows automated login; however, there are currently very few
-IdPs that support this profile, making it difficult to base a service
-on ECP.
+profile, allows for an automated login; however, there are currently
+very few IdPs that support this profile, making it difficult to base a
+service on ECP.  Without IdPs that support the ECP profile, it is
+difficult to use SAML outside of the web-browser.
 
-\section{Portal delegation problem}
+\section{Portals and delegation}
 
-Portals provide considerable benefits to ...
+One solution is to provide the users with a web-based front-end
+(portal) to mediate their computation and storage interactions.  Such
+a portal acts as a graphical user interface (GUI) with which the user
+can steer their analysis and data-management activity.  Once the user
+authenticates with the portal using SAML Web-SSO, the portal uses the
+SAML assertion to obtain an X.509 credential for that user.  It then
+uses that credential when authenticating and interacting with grid
+services on behalf of that user.  This has the benefit of ``hiding''
+the X.509 credential from the user, while still allowing that user to
+interact with grid services.
 
-SAML web-SSO may be used.
+The other benefit from portal delegation is that all grid services
+that require X.509 based authentication may be used by someone who
+authenticates via SAML.  There is no requirement for services to be
+updated.  This is necessary as upgrading the hundred of sites that
+provide resources to WLCG is unfeasible.
 
-Needs a credential translation service.
+To achieve this, the portal must obtain an X.509 credential
+representing the user.  It is unpractical for the portal to run its
+own CA as setting up a CA, running it, and gaining IGTF accreditation
+is prohibitively expensive.  Therefore, it useful to acquire a
+credential from some existing CA that supports the SLCS profile and
+which is already accredited within the IGTF.  In Germany, the DFN
+already provides such a service, but it is targeted at providing
+certificates for users with web-browsers.  A custom API is available
+for portal delegation, but this is not supported by existing portals.
+Therefore, an protocol translation service is needed between DFN-AAI
+and the existing portals.
 
-Several approaches already tried: SERONGS, InCommons.
+\section{Non-browser based approaches}
 
-Services that have already enabled support for MyProxy-like credential
-delegation.
+When handling a much smaller set of resources, the restriction to
+continue using X.509 credentials may be lifted.  For example, it is
+feasible for a site to update the service it provides to accept direct
+SAML-based authentication.  If the user's software can obtain a SAML
+assertion then such an approach would allow the user to present this
+SAML assertion when authenticating.
 
-\section{LSDMA}
+A web service may be provided that allows a user to download the SAML
+assertion.  If this is stored in a standard location then client
+software can locate and use it when authenticating.  While not ideal,
+this provides a functional work-around to IdPs that support only
+Web-SSO and not ECP.
+
+With the SAML assertion saved in the user's local machine, it becomes
+feasible to send the assertion as part of the login process.  Software
+has been developed that can accept the SAML assertion as part of an
+LDAP login process.  Since most server software can authenticate
+against an LDAP service, this allows users to authenticate to these
+services using their SAML assertion, provided the client software
+accepts the SAML assertion as the password.
+
+Another non-browser SAML approach is to use ECP and a SLCS profile CA.
+In this approach, both the SLCS profile CA and the user's IdP support
+ECP.  The client uses ECP to authenticate to the CA, which provides
+the client with a short-lived X.509 certificate.  With this X.509
+certificate, the client can interact with grid resources using the
+X.509 credential.
+
+While a wide-spread deployment of this solution is unfeasible due to
+the lack of IdPs providing ECP support, for targeted groups with good
+contact with their IdP, this becomes feasible.
+
+
+\section{The work within LSDMA}
 
 LSDMA\cite{lsdma} (Large Scale Data Management and Analysis) is a
 project funded by the German government to link research of the
@@ -157,10 +213,9 @@ infrastructures for multi-community use, based on research and
 development in the areas of data management, data access and security,
 storage technologies and data preservation.
 
-dCache, as major partner within the LSDMA DSIT team, is working on
-solving these authentication problems through authenticating via SAML.
-This is non-trivial as almost all SAML usage has been for web-driven
-activity while most data transfers are not initiated by a web-browser.
+The dCache team at DESY and the group at KIT, as major partners within
+the LSDMA DSIT team, are working on solving these authentication
+problems through authenticating via SAML.
 
 Within DSIT, the plan is to establish a federation of Identity
 Providers (IdPs) for Germany: LSDMA-AAI.  This federation is similar
@@ -177,29 +232,44 @@ is desired to authorise some operation based on that user's group
 membership.  A common group-membership service will be run within
 Germany to allow services to discover group membership of a user.
 
-Later, support in dCache for certain transfer protocols (e.g., FTP and
-NFS) will be updated to allow direct SAML-based authentication.  This
-will allow clients to access their data directly without a web-portal
-using their home institute credentials in a secure fashion.
+Current work involves establishing a credential-delegation service
+that allows a portal to request an X.509 credential and the DFN-AAI
+will mint an X.509 credential based on the user's SAML assertion, in
+turn provided by Web-SSO.  This will enable portal delegation to work
+with IdPs in Germany.
 
+In parallel, work is underway in providing a service that allows users
+to download their SAML assertion.  When a user then saves their
+assertion, client software can use this when authenticating.
 
-\section{Work undertaken}
+Yet another activity involves building clients that make use of ECP
+and coordinating effort in enabling ECP in both IdPs and the DFN-AAI
+SLCS CA service.
 
-LDAP facade provides the ability to add SAML interop with existing
-software.
+The final area of work is in enabling direct SAML-based
+authentication.  This is either by embedding the assertion in the
+password field with the LDAP facade, or by updating support in the
+transfer protocols (e.g., FTP and NFS) to allow SAML-based
+authentication.
 
-Tunnelling SAML assertion through ssh password field.
-
-Agreement with DFN-AAI to use their SLCS service.
-
-\section{Future work}
-
-Deployment of a credential translation service to bridge between an
-OAuth-based X.509 request
-
-convert SAML assertions to X.509 
+The ultimate goal is to allow scientists to access their data and to
+log into compute resources based solely on their home institute's
+assertion of their identity.
 
 \section{Conclusion}
+
+We have discussed some of the issues surrounding authentication; in
+particular, how the existing X.509-based grid infrastructure may be
+used by a user who authenticates via SAML Web-SSO.  We also discussed
+ways in which infrastructure may be updated to support direct
+SAML-based authentication.
+
+While considerable work remains, there are considerable benefits from
+allowing users to authenticate via their home institute.  Reducing
+barriers and making it easier to access computing and storage
+resources will empower scientists in many disciplines to maximise the
+scientific output from the available data by maximising the utility of
+available resources.
 
 \ack
 
