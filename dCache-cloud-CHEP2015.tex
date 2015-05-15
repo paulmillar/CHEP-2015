@@ -40,13 +40,13 @@ different, with sync-and-share services often using proprietary
 protocols.
 
 As both approaches are very attractive, dCache.org developed a hybrid
-system, providing the best of both worlds. To avoid reinvent the
+system, providing the best of both worlds. To avoid reinventing the
 wheel, dCache.org decided to embed another Open Source project:
 OwnCloud. This offers the required modern access capabilities but does
 not support the managed data functionality needed for large capacity
 data storage.
 
-With this hybrid system, scientist can share files and synchronize
+With this hybrid system, scientists can share files and synchronize
 their data with laptops or mobile devices as easy as with any other
 cloud storage service. On top of this, the same data can be accessed
 via established mechanisms, like GridFTP to serve the Globus Transfer
@@ -55,13 +55,13 @@ worker nodes or HPC applications via a mounted filesystem. As dCache
 provides a flexible authentication module, the same user can access
 its storage via different authentication mechanisms; e.g., X.509 and
 SAML. Additionally, users can specify the desired quality of service
-or trigger media transitions as necessary, so tuning data access
+or trigger media transitions as necessary, thus tuning data access
 latency to the planned access profile. Such features are a natural
 consequence of using dCache.
 
 We will describe the design of the hybrid dCache/OwnCloud system,
 report on several months of operations experience running it at DESY,
-and elucidate on the future road-map.
+and elucidate the future road-map.
 \end{abstract}
 
 \section{Introduction}
@@ -79,8 +79,9 @@ particle physics (HEP) community, which has constantly strived against
 hardware limitations to store data.  The result is software, such as
 dCache\cite{dcache}, that combines the storage capacity of many
 computers, allowing sites to offer a scalable storage service both in
-terms of performance and capacity.  This allows sites to store both
-the HEP data produced by detectors and the result of physics analysis.
+terms of performance and capacity.  This further allows sites to store
+both the HEP data produced by detectors and the result of physics
+analysis.
 
 Despite this experience with large amounts of data, users found the
 services offered by sync-and-share cloud companies a useful addition
@@ -89,7 +90,7 @@ desktop(s) and laptop(s), and easily sharing those files with
 colleagues provided a convenient and light-weight solution compared to
 more heavy-weight solutions that were officially supported by sites.
 
-Allowing disconnect synchronision (which does not require pairs of
+Allowing disconnect synchronisation (which does not require pairs of
 devices be available concurrently) means that files must be stored on
 some central service, which may be located in a different country from
 the user.  Within a changing climate, it became desirable not to
@@ -97,9 +98,10 @@ expose such files to external companies, especially those based in
 foreign countries.
 
 For these reasons, DESY needed to provide a cloud sync-and-share
-service for its users: most promenantly, to particle physicists and
-photon scientists.  This must provide a similar level of service, with
-easy replication between services, but with data stored on-site.
+service for its users---most prominently, for particle physicists and
+photon scientists---with the requirements of a similar level of
+service and easy replication between services, but with data stored
+on-site.
 
 In this paper, we present this sync-and-share service, its design and
 implementation, the current status and planned future work.
@@ -114,7 +116,7 @@ users can migrate to the new system with little or no support.
 \begin{itemize}
 \item
 It should support all the computing platforms DESY currently employs:
-Microsoft Windows based desktops, Apple Macintosh and Linux-based
+Microsoft Windows-based desktops, Apple Macintosh- and Linux-based
 computers.  There should also be support for mobile devices, such as
 those that have adopted the Android Operating System and iOS.
 
@@ -125,7 +127,7 @@ unauthorised activity.
 
 \item
 The service should integrate well with the existing DESY
-infrastructure; in particular, the user should be able to authenticate
+infrastructure; in particular, users should be able to authenticate
 with their DESY username and password.
 \end{itemize}
 
@@ -136,7 +138,7 @@ the service to be useful, but are likely to be requested by users.
 \begin{itemize}
 \item
 The users may want some storage capacity that is not synchronised with
-their devices.  Such files will be available for sharing with others
+their devices.  Such files would be available for sharing with others
 without being synchronised on all devices.  Files should be movable
 between synchronising and non-synchronising space.
 
@@ -145,7 +147,7 @@ Providing different quality-of-service guarantees: archival storage
 for mission critical data and disk-only copy for other data.
 
 \item
-Supporting transferring of files to some remote service without the
+Supporting the transfer of files to some remote service without the
 data travelling through the user's computer.
 
 \item
@@ -164,9 +166,9 @@ The ownCloud project is an open-source sync-and-share storage solution
 that is, at the time of writing, gaining popularity.  In particular,
 it is the use of this service in other HEP laboratories that makes
 ownCloud particularly attractive.  Although ownCloud provides users
-with a good front-end system, including web-based browsing, and
+with a good front-end system, including web-based browsing and
 synchronisation clients for Microsoft Windows, Linux-based OSes, Mac
-OS X and mobile devices, it lacks support for managing data on large
+OS X and mobile devices, it lacks support for managing data on a large
 scale.  Instead, it assumes a site has an appropriate storage system
 mounted on the local filesystem.
 
@@ -191,7 +193,7 @@ establish whether or not the user is allowed to use the service.
 At DESY, a proprietary system (called ``the registry'') provides
 information about users.  Various adapters (called ``plaform
 adapters'') allow custom integration of this information with the
-various services DESY provide.  For the DESY Cloud service, there are
+various services DESY provides.  For the DESY Cloud service, there are
 two parts to the platform adapter: the registry platform adapter and
 the server-side platform adapter.
 
@@ -203,7 +205,7 @@ when an account is created, when it expires, when it is either enabled
 or disabled, and when an account should be archived.
 
 The server-side platform adapter updates dCache in response to events
-from the registry platform adapter; for example, when it receives a
+from the registry platform adapter; for example, when it receives an
 account-created event, a suitable home directory is created for that
 user.  Sufficient information is included in the event for the
 server-side platform adapter to operate correctly.
@@ -232,11 +234,11 @@ farms, and remote storage for moving data to remote sites.
 Figure~\ref{fig:scicloud} shows this diagrammatically.
 
 Providing a single system brings many advantages.  A single system
-reduces the cost of operating the system as different services appear
-as different facets of the same underlying storage.  The tight
-integration can provide a better end-user experience as there is no
-scripts copying files between systems.  In can lead to better use of
-resources, as unnecessary redundances can be removed.
+reduces the cost of operating the system, because different services
+appear as different facets of the same underlying storage.  The tight
+integration can provide a better end-user experience since there are
+no scripts copying files between systems.  It can lead to better use
+of resources, as unnecessary redundances can be removed.
 
 \section{Current status}
 
@@ -252,25 +254,32 @@ capacity.
 The experience gained from this limited deployment has allowed the
 deployment team to discover problems both in ownCloud and dCache
 software.  The team at DESY has been proactive in fixing these
-problems, with patches being sent.  These patches have been accepted
-in new releases of both dCache and ownCloud; this is in keeping with
-the desired goal of running unpatched software.
+problems, with patches being sent @@[this is not clear.  Who is
+  writing the patches, who is receiving them??]@@.  These patches have
+been accepted in new releases of both dCache and ownCloud, in keeping
+with the desired goal of running unpatched software.
 
-This experience, both in running the software and DESY's ability to
-diagnose and fix problems as they are found, leave us confident as we
-roll out the software to all members of DESY.
+This experience, both in running the software and with DESY's ability
+to diagnose and fix problems as they are found, leave us confident as
+we roll out the software to all members of DESY.
+
+@@[Suggest rewriting this: The experience gained from running the
+  software and the DESY team's alacrity in diagnosing and fixing
+  problems as they are found, instill a high degree of confidence in
+  the viability of this solution as we roll out the software to all
+  members of DESY]@@
 
 \section{Development and future work}
 
-One future goal is to allow direct access to the files a user has
-stored via DESY Cloud service.  Such access would allow the user to
-run analysis work based on analysis programs files kept in sync with
-their work machines.  It would also allow users to synchronise the
-output from their analysis work and to share those results with their
+One future goal is to furnish direct access to the files a user has
+stored via DESY Cloud service.  Such access would allow users to run
+analysis work based on analysis program files kept in sync with their
+work machines.  It would also allow users to synchronise the output
+from their analysis work and to share those results with their
 colleagues.
 
 To support this usage, the files written into dCache must have the
-users ownership.  Normally, files written by an application have that
+user's ownership.  Normally, files written by an application have that
 application's ownership; for example, all files written by the Apache
 daemon (that hosts the ownCloud service) are normally owned by user
 {\em httpd}, rather than the DESY user.  It proved too difficult to
@@ -292,13 +301,13 @@ in dCache has no effect on whether the file is shared in ownCloud;
 likewise, sharing or unsharing a file in ownCloud has no effect on
 dCache's ACLs.  Future work will link these two, allowing consistent
 permissions whether the file is read through ownCloud or directly via
-dCache.  To facilicate this, ownCloud and dCache use a common database
-technology: PostgreSQL.
+dCache.  That ownCloud and dCache use a common database technology
+(PostgreSQL) will greatly facilitate this integration.
 
 Another issue is that of data integrity and preventing data
-corruption.  The concept of preserving data integrety by computing a
+corruption.  The concept of preserving data integrity by computing a
 checksum is baked into dCache, with background checking (scrubbing)
-and automatic checking on integrety when transfering files.  Such
+and automatic checking on integrity when tranferring files.  Such
 concepts currently do not exist within ownCloud.  Working with the
 ownCloud developers, we will introduce such checks to ensure
 synchronisation is safe from corruption.
@@ -314,11 +323,11 @@ One final point is with file change notification.  Currently the
 ownCloud client polls for changes.  Since most times the request
 reveals that nothing has changed, this introduces unnecessary load on
 the server.  To reduce the impact of this load, the client checks
-whether there have been any changes every 30 seconds.  However, this
+every 30 seconds whether there have been any changes.  However, this
 results in the client becoming slow to react to remote changes.
-
-Introducing a notification scheme would allow clients to react quickly
-while not placing to great a burden on the server.
+@@[why the new paragraph? join this with preceding]@@ Introducing a
+notification scheme would allow clients to react quickly while not
+placing too great a burden on the server.
 
 \section{Conclusion}
 
@@ -330,10 +339,10 @@ DESY users.
 
 The service is provided freely to DESY users, with no charge at point
 of use.  While no decision has been made on how the final service will
-be funded, we anticipate this policy continuing and the service will
-be supported from indirect funding.
+be funded, we anticipate this policy will continue and the service
+will be supported from indirect funding.
 
-The improvements and bug-fixes that were developed while bringing this
+The improvements and bug fixes that were developed while bringing this
 service into a production-like state and the goal of running unpatched
 software results in a service that other sites can replicate.  For
 example, sites that already have a dCache instance can extend that
